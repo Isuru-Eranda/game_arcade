@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1098014362367",
+    "project_id": "game-arcade-7edc5",
+    "storage_bucket": "game-arcade-7edc5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098014362367:android:199e41d83ee6aff4dd5aca",
+        "android_client_info": {
+          "package_name": "com.example.game_arcade"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjoNgNBZ74MisiGG4WPKD_S6jW4Xfb48U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
