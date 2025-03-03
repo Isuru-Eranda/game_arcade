@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_arcade/screens/sing_up.dart';
 import 'package:game_arcade/widget/button.dart';
 import 'package:game_arcade/widget/text_field.dart';
 
@@ -17,7 +18,7 @@ class _SignupScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: SafeArea(
           child: SizedBox(
         child: Column(
@@ -26,10 +27,10 @@ class _SignupScreenState extends State<LoginScreen> {
             SizedBox(
               width: double.infinity,
               height: height / 2.7,
-              child: Image.asset('images/img1.jpg'),
+              child: Image.asset('images/game_logo.jpg'),
             ),
             TextFieldInput(
-                icon: Icons.person,
+                icon: Icons.email,
                 textEditingController: emailController,
                 hintText: 'Enter your email',
                 textInputType: TextInputType.text),
@@ -64,7 +65,14 @@ class _SignupScreenState extends State<LoginScreen> {
                       fontSize: 16,),
                       ),
                   GestureDetector(
-                    onTap: (){},
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                         MaterialPageRoute(
+                          builder: (context)=> const SignUpScreen()
+                          ),
+                        );
+                       },
                   child: Text(
                     "SingUp",
                     style: TextStyle(
