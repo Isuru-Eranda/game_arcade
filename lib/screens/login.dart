@@ -50,7 +50,7 @@ class _SignupScreenState extends State<LoginScreen> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
-                      color: Colors.blue,
+                      color: Colors.orange,
                     ),
                   ),
                 ),
