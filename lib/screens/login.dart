@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_arcade/screens/home_page.dart';
 import 'package:game_arcade/screens/sing_up.dart';
 import 'package:game_arcade/widget/button.dart';
 import 'package:game_arcade/widget/text_field.dart';
@@ -55,7 +56,14 @@ class _SignupScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              MyButtons(onTap: (){}, text: "Log In"),
+              MyButtons(onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(),
+                  ),
+                );
+              }, text: "Log In"),
               SizedBox(height: height / 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
