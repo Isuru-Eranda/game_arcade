@@ -1,6 +1,6 @@
 import 'package:game_arcade/services/authentication.dart';
 import 'package:flutter/material.dart';
-import 'package:game_arcade/screens/home_page.dart';
+import 'package:game_arcade/screens/home_screen.dart';
 import 'package:game_arcade/screens/login.dart';
 import 'package:game_arcade/widget/button.dart';
 import 'package:game_arcade/widget/snack_bar.dart';
@@ -38,7 +38,7 @@ class _SignupScreenState extends State<SignUpScreen> {
       //navigate to the next screen
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const HomePage(),
+          builder: (context) => const HomeScreen(),
         ),
       );
     } else {

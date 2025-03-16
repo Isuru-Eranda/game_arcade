@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:game_arcade/screens/home_page.dart';
+import 'package:game_arcade/screens/home_screen.dart';
 import 'package:game_arcade/screens/sing_up.dart';
 import 'package:game_arcade/widget/button.dart';
 import 'package:game_arcade/widget/text_field.dart';
@@ -60,7 +60,7 @@ class _SignupScreenState extends State<LoginScreen> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const HomePage(),
+                    builder: (context) => const HomeScreen(),
                   ),
                 );
               }, text: "Log In"),
