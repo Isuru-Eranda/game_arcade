@@ -1,6 +1,6 @@
 import 'package:game_arcade/services/authentication.dart';
 import 'package:flutter/material.dart';
-import 'package:game_arcade/screens/home_page.dart';
+import 'package:game_arcade/screens/home_screen.dart';
 import 'package:game_arcade/screens/login.dart';
 import 'package:game_arcade/widget/button.dart';
 import 'package:game_arcade/widget/snack_bar.dart';
@@ -38,7 +38,7 @@ class _SignupScreenState extends State<SignUpScreen> {
       //navigate to the next screen
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const HomePage(),
+          builder: (context) => const HomeScreen(),
         ),
       );
     } else {
@@ -57,62 +57,62 @@ class _SignupScreenState extends State<SignUpScreen> {
       backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: SafeArea(
           child: SizedBox(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: double.infinity,
-              height: height / 2.7,
-              child: Image.asset('images/game_logo.jpg'),
-            ),
-            TextFieldInput(
-                icon: Icons.person,
-                textEditingController: nameController,
-                hintText: 'Enter your name',
-                textInputType: TextInputType.text),
-            TextFieldInput(
-                icon: Icons.email,
-                textEditingController: emailController,
-                hintText: 'Enter your email',
-                textInputType: TextInputType.text),
-            TextFieldInput(
-              icon: Icons.lock,
-              textEditingController: passwordController,
-              hintText: 'Enter your passord',
-              textInputType: TextInputType.text,
-              isPass: true,
-            ),
-            MyButtons(onTap:signupUser, text: "Sign Up"),
-            SizedBox(height: height / 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  "Already have an account? ",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                SizedBox(
+                  width: double.infinity,
+                  height: height / 2.7,
+                  child: Image.asset('images/game_logo.jpg'),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
+                TextFieldInput(
+                    icon: Icons.person,
+                    textEditingController: nameController,
+                    hintText: 'Enter your name',
+                    textInputType: TextInputType.text),
+                TextFieldInput(
+                    icon: Icons.email,
+                    textEditingController: emailController,
+                    hintText: 'Enter your email',
+                    textInputType: TextInputType.text),
+                TextFieldInput(
+                  icon: Icons.lock,
+                  textEditingController: passwordController,
+                  hintText: 'Enter your passord',
+                  textInputType: TextInputType.text,
+                  isPass: true,
+                ),
+                MyButtons(onTap:signupUser, text: "Sign Up"),
+                SizedBox(height: height / 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Already have an account? ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
-                    );
-                  },
-                  child: Text(
-                    "Login",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "Login",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-      )),
+          )),
     );
   }
 }
