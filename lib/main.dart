@@ -21,7 +21,7 @@ class GameArcadeApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Game Arcade',
       theme: ThemeData.dark(),
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }

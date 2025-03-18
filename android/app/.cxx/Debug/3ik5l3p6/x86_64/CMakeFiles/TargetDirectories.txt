@@ -1,0 +1,2 @@
+C:/Users/Methum/Desktop/Game Arcade/game_arcade-fokred/android/app/.cxx/Debug/3ik5l3p6/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/Methum/Desktop/Game Arcade/game_arcade-fokred/android/app/.cxx/Debug/3ik5l3p6/x86_64/CMakeFiles/rebuild_cache.dir
