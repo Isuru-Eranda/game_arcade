@@ -28,7 +28,7 @@ class _SignupScreenState extends State<LoginScreen> {
                 SizedBox(
                   width: double.infinity,
                   height: height / 2.7,
-                  child: Image.asset('images/game_logo.jpg'),
+                  child: Image.asset('assets/game_logo.jpg'),
                 ),
                 TextFieldInput(
                     icon: Icons.email,
