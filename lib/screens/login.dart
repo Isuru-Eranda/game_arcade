@@ -15,12 +15,15 @@ class _SignupScreenState extends State<LoginScreen> {
   // for controller
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: SafeArea(
+        child: SingleChildScrollView(
+          // Wrap the content in a scrollable view
           child: SizedBox(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,24 +34,28 @@ class _SignupScreenState extends State<LoginScreen> {
                   child: Image.asset('assets/game_logo.jpg'),
                 ),
                 TextFieldInput(
-                    icon: Icons.email,
-                    textEditingController: emailController,
-                    hintText: 'Enter your email',
-                    textInputType: TextInputType.text),
+                  icon: Icons.email,
+                  textEditingController: emailController,
+                  hintText: 'Enter your email',
+                  textInputType: TextInputType.text,
+                ),
+                const SizedBox(height: 10), // Add spacing between fields
                 TextFieldInput(
                   icon: Icons.lock,
                   textEditingController: passwordController,
-                  hintText: 'Enter your passord',
+                  hintText: 'Enter your password',
                   textInputType: TextInputType.text,
                   isPass: true,
                 ),
+                const SizedBox(
+                    height: 10), // Add spacing above "Forgot Password"
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 35),
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Text(
                       "Forgot Password?",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                         color: Colors.orange,
@@ -56,35 +63,44 @@ class _SignupScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                MyButtons(onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
-                    ),
-                  );
-                }, text: "Log In"),
-                SizedBox(height: height / 15),
+                const SizedBox(height: 20), // Add spacing above the button
+                MyButtons(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      ),
+                    );
+                  },
+                  text: "Log In",
+                ),
+                SizedBox(height: height / 15), // Add spacing below the button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Don't have an account? ", style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,),
+                    const Text(
+                      "Don't have an account? ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context)=> const SignUpScreen()
+                            builder: (context) => const SignUpScreen(),
                           ),
                         );
                       },
-                      child: Text(
-                        "SingUp",
+                      child: const Text(
+                        "SignUp",
                         style: TextStyle(
-                            fontWeight:FontWeight.bold,fontSize: 16
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.orange,
                         ),
                       ),
                     ),
@@ -92,7 +108,9 @@ class _SignupScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }
