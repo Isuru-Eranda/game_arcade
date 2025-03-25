@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:game_arcade/screens/dino_game.dart'; // Import DinoGame screen
+import 'package:game_arcade/screens/game_submission_form.dart';
+import 'package:game_arcade/screens/leaderboard_screen.dart'; // Import Leaderboard screen
+import 'package:game_arcade/screens/notifications_screens.dart'; // Import Notifications screen
+import 'package:game_arcade/screens/user_profile_screen.dart'; // Import User Profile screen
 import 'game_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -11,6 +15,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0; // Track the selected tab
+
+  // List of screens for each tab
+  final List<Widget> _screens = [
+    const HomeContent(), // Home content
+    const LeaderboardScreen(), // Leaderboard screen
+    const NotificationsScreen(), // Notifications screen
+    const UserProfileScreen(), // User Profile screen
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -30,32 +42,57 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.emoji_events), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.emoji_events), label: 'Leaderboard'),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notifications'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-              child: Text(
-                'GAME HUB',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _screens,
+      ),
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const GameSubmissionForm()),
+                );
+              },
+              child: const Icon(Icons.add),
+              backgroundColor: Colors.orange,
+            )
+          : null, // Show FAB only on the Home tab
+    );
+  }
+}
+
+// Home content widget
+class HomeContent extends StatelessWidget {
+  const HomeContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+            child: Text(
+              'GAME HUB',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
-            const SizedBox(height: 10),
-            _buildCategoryTabs(),
-            Expanded(child: _buildGameGrid(context)),
-          ],
-        ),
+          ),
+          const SizedBox(height: 10),
+          _buildCategoryTabs(),
+          Expanded(child: _buildGameGrid(context)),
+        ],
       ),
     );
   }
