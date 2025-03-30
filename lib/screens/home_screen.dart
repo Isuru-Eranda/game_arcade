@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_arcade/screens/dino_game.dart'; // Import DinoGame screen
 import 'game_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -70,14 +71,14 @@ class _HomeScreenState extends State<HomeScreen> {
           children: categories
               .map(
                 (category) => Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Chip(
-                label: Text(category),
-                backgroundColor: Colors.grey[800],
-                labelStyle: const TextStyle(color: Colors.white),
-              ),
-            ),
-          )
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Chip(
+                    label: Text(category),
+                    backgroundColor: Colors.grey[800],
+                    labelStyle: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              )
               .toList(),
         ),
       ),
@@ -85,7 +86,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildGameGrid(BuildContext context) {
-    List<String> games = ["Adventure", "Sports", "Puzzle", "Shooter", "Arcade", "Strategy"];
+    List<String> games = [
+      "Adventure",
+      "Sports",
+      "Puzzle",
+      "Shooter",
+      "Dino Run",
+      "Strategy"
+    ];
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -99,23 +107,46 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GameDetailScreen(gameName: games[index]),
-                ),
-              );
+              if (games[index] == "Dino Run") {
+                // Navigate to DinoGame
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MyHomePage(title: 'Dino Run'),
+                  ),
+                );
+              } else {
+                // Navigate to GameDetailScreen for other games
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        GameDetailScreen(gameName: games[index]),
+                  ),
+                );
+              }
             },
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.grey[800],
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Center(
-                child: Text(
-                  games[index],
-                  style: const TextStyle(color: Colors.white),
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (games[index] == "Dino Run")
+                    Image.asset(
+                      'assets/images/dono.jpg', // Path to your image
+                      height: 80,
+                      width: 80,
+                      fit: BoxFit.cover,
+                    ),
+                  const SizedBox(height: 10),
+                  Text(
+                    games[index],
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ],
               ),
             ),
           );
