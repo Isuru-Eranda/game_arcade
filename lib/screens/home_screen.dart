@@ -91,6 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
       "Clumsy Bird",
       "Stack Clash",
       "Dino Run",
+      "Game 1",
+      "Game 2",
     ];
 
     return Padding(
