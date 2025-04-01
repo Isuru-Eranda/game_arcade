@@ -60,8 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   MaterialPageRoute(builder: (context) => const GameSubmissionForm()),
                 );
               },
-              child: const Icon(Icons.add),
               backgroundColor: Colors.orange,
+              child: const Icon(Icons.add),
             )
           : null, // Show FAB only on the Home tab
     );

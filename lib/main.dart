@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:game_arcade/firebase_options.dart';
-
-import 'screens/splash_screen.dart';
+import 'package:game_arcade/screens/home_screen.dart';
+import 'package:game_arcade/screens/signup.dart';
+import 'package:provider/provider.dart';
+import 'package:game_arcade/controllers/auth_controller.dart';
+import 'package:game_arcade/screens/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const GameArcadeApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthController()),
+      ],
+      child: const GameArcadeApp(),
+    ),
+  );
 }
 
 class GameArcadeApp extends StatelessWidget {
@@ -21,7 +31,12 @@ class GameArcadeApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Game Arcade',
       theme: ThemeData.dark(),
-      home: const SplashScreen(),
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => const LoginScreen(),
+        '/signup': (context) => const SignUpScreen(),
+        '/home': (context) => const HomeScreen(),
+      },
     );
   }
 }

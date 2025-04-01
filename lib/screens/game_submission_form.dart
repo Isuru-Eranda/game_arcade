@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
+import 'package:game_arcade/controllers/game_submission_controller.dart';
 
 class GameSubmissionForm extends StatefulWidget {
   const GameSubmissionForm({super.key});
@@ -14,25 +12,44 @@ class GameSubmissionForm extends StatefulWidget {
 class _GameSubmissionFormState extends State<GameSubmissionForm> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final GameSubmissionController _controller = GameSubmissionController();
   bool _isSubmitting = false;
-  PlatformFile? _selectedFile;
+  PlatformFile? _selectedGameFile;
+  List<PlatformFile> _selectedGamePictures = [];
 
-  Future<void> _pickFile() async {
+  // Method to pick the game file
+  Future<void> _pickGameFile() async {
     final result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
       setState(() {
-        _selectedFile = result.files.first;
+        _selectedGameFile = result.files.first;
       });
     }
   }
 
+  // Method to pick multiple game pictures
+  Future<void> _pickGamePictures() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: true,
+    );
+
+    if (result != null) {
+      setState(() {
+        _selectedGamePictures = result.files;
+      });
+    }
+  }
+
+  // Method to submit the game
   Future<void> _submitGame() async {
     if (_titleController.text.isEmpty ||
         _descriptionController.text.isEmpty ||
-        _selectedFile == null) {
+        _selectedGameFile == null ||
+        _selectedGamePictures.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields and select a file')),
+        const SnackBar(content: Text('Please fill in all fields and select files')),
       );
       return;
     }
@@ -42,34 +59,12 @@ class _GameSubmissionFormState extends State<GameSubmissionForm> {
     });
 
     try {
-      // Get the current user's email
-      final User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('You must be logged in to submit a game')),
-        );
-        return;
-      }
-      final String email = user.email!;
-
-      // Upload the file to Firebase Storage
-      final storageRef = FirebaseStorage.instance
-          .ref()
-          .child('games/${_selectedFile!.name}');
-      await storageRef.putData(_selectedFile!.bytes!);
-
-      // Get the download URL
-      final downloadUrl = await storageRef.getDownloadURL();
-
-      // Save metadata to Firestore
-      await FirebaseFirestore.instance.collection('game_submissions').add({
-        'title': _titleController.text,
-        'description': _descriptionController.text,
-        'fileUrl': downloadUrl,
-        'email': email, // Store the user's email
-        'status': 'pending', // Default status
-        'submittedAt': Timestamp.now(),
-      });
+      await _controller.submitGame(
+        title: _titleController.text,
+        description: _descriptionController.text,
+        gameFile: _selectedGameFile!,
+        gamePictures: _selectedGamePictures,
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Game submitted successfully!')),
@@ -105,13 +100,28 @@ class _GameSubmissionFormState extends State<GameSubmissionForm> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _pickFile,
+              onPressed: _pickGameFile,
               child: const Text('Select Game File'),
             ),
-            if (_selectedFile != null)
+            if (_selectedGameFile != null)
               Padding(
                 padding: const EdgeInsets.only(top: 10),
-                child: Text('Selected File: ${_selectedFile!.name}'),
+                child: Text('Selected Game File: ${_selectedGameFile!.name}'),
+              ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _pickGamePictures,
+              child: const Text('Select Game Pictures'),
+            ),
+            if (_selectedGamePictures.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _selectedGamePictures
+                      .map((picture) => Text('Selected Picture: ${picture.name}'))
+                      .toList(),
+                ),
               ),
             const SizedBox(height: 20),
             _isSubmitting

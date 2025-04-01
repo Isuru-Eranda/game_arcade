@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:game_arcade/screens/home_screen.dart';
-import 'package:game_arcade/screens/sing_up.dart';
+import 'package:provider/provider.dart';
+import 'package:game_arcade/controllers/auth_controller.dart';
+import 'package:game_arcade/screens/signup.dart';
 import 'package:game_arcade/widget/button.dart';
 import 'package:game_arcade/widget/text_field.dart';
 
@@ -8,22 +9,46 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _SignupScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignupScreenState extends State<LoginScreen> {
-  // for controller
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  void loginUser() async {
+    final authController = Provider.of<AuthController>(context, listen: false);
+
+    // Validate email and password fields
+    if (emailController.text.trim().isEmpty ||
+        passwordController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in both email and password.')),
+      );
+      return;
+    }
+
+    String res = await authController.loginUser(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+
+    if (res == "success") {
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(res)));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    final authController = Provider.of<AuthController>(context);
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: SafeArea(
         child: SingleChildScrollView(
-          // Wrap the content in a scrollable view
           child: SizedBox(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,9 +62,9 @@ class _SignupScreenState extends State<LoginScreen> {
                   icon: Icons.email,
                   textEditingController: emailController,
                   hintText: 'Enter your email',
-                  textInputType: TextInputType.text,
+                  textInputType: TextInputType.emailAddress,
                 ),
-                const SizedBox(height: 10), // Add spacing between fields
+                const SizedBox(height: 10),
                 TextFieldInput(
                   icon: Icons.lock,
                   textEditingController: passwordController,
@@ -47,35 +72,14 @@ class _SignupScreenState extends State<LoginScreen> {
                   textInputType: TextInputType.text,
                   isPass: true,
                 ),
-                const SizedBox(
-                    height: 10), // Add spacing above "Forgot Password"
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 35),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      "Forgot Password?",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.orange,
+                const SizedBox(height: 20),
+                authController.isLoading
+                    ? const CircularProgressIndicator()
+                    : MyButtons(
+                        onTap: loginUser,
+                        text: "Log In",
                       ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20), // Add spacing above the button
-                MyButtons(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
-                      ),
-                    );
-                  },
-                  text: "Log In",
-                ),
-                SizedBox(height: height / 15), // Add spacing below the button
+                SizedBox(height: height / 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -96,7 +100,7 @@ class _SignupScreenState extends State<LoginScreen> {
                         );
                       },
                       child: const Text(
-                        "SignUp",
+                        "Sign Up",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
