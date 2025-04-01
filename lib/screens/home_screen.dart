@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
               child: Text(
-                'GAME HUB',
+                'GAME ARCADE',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -87,12 +87,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildGameGrid(BuildContext context) {
     List<String> games = [
-      "Adventure",
-      "Sports",
-      "Puzzle",
-      "Shooter",
+      "Dino Dash",
+      "Clumsy Bird",
+      "Stack Clash",
       "Dino Run",
-      "Strategy"
     ];
 
     return Padding(
