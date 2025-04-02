@@ -1,6 +1,6 @@
-import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:game_arcade/games/game1/screens/game_play.dart';
+import 'package:game_arcade/screens/home_screen.dart';
 
 class MainMenu extends StatelessWidget {
   const MainMenu({super.key});
@@ -32,15 +32,10 @@ class MainMenu extends StatelessWidget {
                 children: [
                   Text(
                     'Dino Run',
-                    style: TextStyle(fontSize: 60, color:BasicPalette.green.color),
+                    style: TextStyle(fontSize: 60, color: Colors.green),
                   ),
+                  const SizedBox(height: 20),
                   ElevatedButton(
-                    
-                    
-                    child: Text(
-                      'Play',
-                      style: TextStyle(fontSize: 30,color: BasicPalette.green.color),
-                    ),
                     onPressed: () {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
@@ -48,6 +43,24 @@ class MainMenu extends StatelessWidget {
                         ),
                       );
                     },
+                    child: Text(
+                      'Play',
+                      style: TextStyle(fontSize: 30, color: Colors.green),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const HomeScreen(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Home',
+                      style: TextStyle(fontSize: 30, color: Colors.green),
+                    ),
                   ),
                 ],
               ),

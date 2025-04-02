@@ -18,6 +18,7 @@ class DinoGame extends FlameGame with TapDetector, HasCollisionDetection {
   late final Dino _dino;
   late final ParallaxComponent _parallaxComponent;
   late final TextComponent _scoreText;
+  double _elapsedTime = 0;
   late final EnemyManager _enemyManager;
   int score = 0;
 
@@ -96,8 +97,13 @@ class DinoGame extends FlameGame with TapDetector, HasCollisionDetection {
   @override
   void update(double dt) {
     super.update(dt);
-    score += (60 * dt).toInt();
-    _scoreText.text = score.toString();
+    _elapsedTime += dt;
+    if (_elapsedTime >(1/60)) {
+      _elapsedTime = 0;
+      score+= 1;
+      _scoreText.text = score.toString();
+    }
+    
 
     children.whereType<Enemy>().forEach((enemy) {
       if (_dino.distance(enemy) < 30) {
