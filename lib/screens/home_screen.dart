@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:game_arcade/screens/dino_game.dart'; 
+import 'package:game_arcade/games/game2/screens/game_screen.dart' as game2;
+import 'package:game_arcade/screens/dino_game.dart'; // Import DinoGame screen
 import 'package:game_arcade/screens/game_submission_form.dart';
 import 'package:game_arcade/screens/leaderboard_screen.dart';
 import 'package:game_arcade/screens/notifications_screens.dart';
@@ -43,8 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.emoji_events), label: 'Leaderboard'),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notifications'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.emoji_events), label: 'Leaderboard'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications), label: 'Notifications'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
@@ -57,7 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const GameSubmissionForm()),
+                  MaterialPageRoute(
+                      builder: (context) => const GameSubmissionForm()),
                 );
               },
               backgroundColor: Colors.orange,
@@ -76,17 +80,17 @@ class HomeContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center, // Changed to center
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 10),
-          const Center( // Added Center widget
+          const Center(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
               child: Text(
                 'GAME HUB',
                 style: TextStyle(
                   fontSize: 38,
-                  fontWeight: FontWeight.normal, // Changed from bold to normal
+                  fontWeight: FontWeight.normal,
                   color: Colors.orange,
                 ),
               ),
@@ -100,12 +104,13 @@ class HomeContent extends StatelessWidget {
   }
 
   Widget _buildGameGrid(BuildContext context) {
-    // Take only the first 4 games for a 2x2 grid
+    // Games list including Dino Run and FlappyBird
     List<String> games = [
       "Dino Run",
       "Adventure",
       "Sports",
       "Puzzle",
+      "FlappyBird",
     ];
 
     return Padding(
@@ -129,12 +134,21 @@ class HomeContent extends StatelessWidget {
                     builder: (context) => const MyHomePage(title: 'Dino Run'),
                   ),
                 );
+              } else if (games[index] == "FlappyBird") {
+                // Navigate to FlappyBird (game2) screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const game2.GameScreen(),
+                  ),
+                );
               } else {
                 // Navigate to GameDetailScreen for other games
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => GameDetailScreen(gameName: games[index]),
+                    builder: (context) =>
+                        GameDetailScreen(gameName: games[index]),
                   ),
                 );
               }
@@ -144,32 +158,14 @@ class HomeContent extends StatelessWidget {
                 Expanded(
                   child: Center(
                     child: Container(
-                      width: MediaQuery.of(context).size.width * 0.25, // Adjusted container size
-                      height: MediaQuery.of(context).size.width * 0.25, // Adjusted container size
+                      // Using styling from the shiraz branch
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.orange, width: 2), // Made border thinner
+                        color: Colors.grey[800],
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0), // Small padding inside the border
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: index == 0 ? 
-                            Image.asset(
-                              'assets/images/dono.jpg',
-                              fit: BoxFit.contain, // Changed to contain to prevent cropping
-                            ) :
-                            Container(
-                              color: Colors.grey[800],
-                              child: Center(
-                                child: Icon(
-                                  _getIconForGame(games[index]),
-                                  size: 40, // Adjusted icon size
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                        ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: _buildGameIcon(games[index]),
                       ),
                     ),
                   ),
@@ -180,7 +176,7 @@ class HomeContent extends StatelessWidget {
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
-                    fontWeight: FontWeight.normal, // Changed from bold to normal
+                    fontWeight: FontWeight.normal,
                   ),
                 ),
               ],
@@ -189,6 +185,31 @@ class HomeContent extends StatelessWidget {
         },
       ),
     );
+  }
+
+  // Helper method to build the game icon or image
+  Widget _buildGameIcon(String gameName) {
+    if (gameName == "Dino Run") {
+      return Image.asset(
+        'assets/images/dono.jpg', // Path to Dino Run image
+        height: 80,
+        width: 80,
+        fit: BoxFit.cover,
+      );
+    } else if (gameName == "FlappyBird") {
+      return Image.asset(
+        'assets/images/flappybird_icon.png', // Path to FlappyBird image
+        height: 80,
+        width: 80,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Icon(
+        _getIconForGame(gameName),
+        size: 40,
+        color: Colors.white,
+      );
+    }
   }
 
   IconData _getIconForGame(String gameName) {

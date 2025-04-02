@@ -78,6 +78,12 @@ flutter:
     - assets/images/Bat/
     - assets/images/Rino/
     - assets/audio/
+    - assets/images/game2/pipe_top.png
+    - assets/images/game2/pipe_bottom.png
+    - assets/images/game2/bird.png
+    - assets/images/game2/background.png
+    - assets/images/game2/ground.png
+    
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
