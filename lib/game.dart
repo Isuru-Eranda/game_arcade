@@ -9,8 +9,7 @@ import 'package:game_arcade/games/game2/components/ground.dart';
 import 'package:game_arcade/games/game2/components/pipe.dart';
 import 'package:game_arcade/games/game2/components/pipe_manager.dart';
 import 'package:game_arcade/games/game2/components/score.dart'; // Ensure this import is included
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:game_arcade/controllers/score_controller.dart';
 
 class FlappyBirdGame extends FlameGame with TapDetector, HasCollisionDetection {
   late Bird bird;
@@ -22,8 +21,8 @@ class FlappyBirdGame extends FlameGame with TapDetector, HasCollisionDetection {
   bool isGameOver = false;
   final double groundScrollingSpeed = 100;
 
-  // Firestore instance
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // ScoreController instance
+  final ScoreController _scoreController = ScoreController();
 
   @override
   Future<void> onLoad() async {
@@ -59,24 +58,6 @@ class FlappyBirdGame extends FlameGame with TapDetector, HasCollisionDetection {
     score += 1;
   }
 
-  // Method to save the score
-  Future<void> saveScoreToFirestore(int score) async {
-    try {
-      // Get the current user
-      final user = FirebaseAuth.instance.currentUser;
-
-      // Save the score along with the user's email
-      await _firestore.collection('scores').add({
-        'score': score,
-        'email': user?.email ?? 'anonymous', // Use 'anonymous' if no user is logged in
-        'timestamp': FieldValue.serverTimestamp(), // Add a timestamp
-      });
-      print('Score saved successfully with email: ${user?.email}');
-    } catch (e) {
-      print('Error saving score: $e');
-    }
-  }
-
   // GAME OVER
 
   void gameOver() {
@@ -86,8 +67,11 @@ class FlappyBirdGame extends FlameGame with TapDetector, HasCollisionDetection {
     isGameOver = true;
     pauseEngine();
 
-    // Save the score to Firestore
-    saveScoreToFirestore(score);
+    // Save the score to Firestore using the ScoreController
+    _scoreController.saveScore(
+      gameName: 'FlappyBird',
+      score: score,
+    );
 
     // show dialog box for user
     showDialog(
