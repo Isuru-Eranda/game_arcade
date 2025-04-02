@@ -103,7 +103,8 @@ class _GameBoardState extends State<GameBoard> {
 
               Navigator.pop(context);
             },
-            child: Text('Play Again')),
+            child: Text('Play Again'),
+          ),
           TextButton(
             onPressed: () {
               Navigator.pop(context); // Close dialog
@@ -312,12 +313,15 @@ class _GameBoardState extends State<GameBoard> {
               // landed pieces
               else if(gameBoard[row][col] != null){
                 final Tetromino? tetrominoType = gameBoard[row][col];
-                return Pixel(color: tetrominoColors[tetrominoType]);
+                return Pixel(
+                  // Fix: Use null-aware operator to provide a default color if the lookup returns null
+                  color: tetrominoColors[tetrominoType] ?? Colors.white
+                );
               }  
               //blank pixel
               else {
                 return Pixel(
-                  color: Colors.grey[900],
+                  color: Colors.grey[900] ?? Colors.grey,
                 );
               }
             },
