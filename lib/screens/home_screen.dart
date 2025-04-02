@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:game_arcade/games/game2/screens/game_screen.dart' as game2;
 import 'package:game_arcade/screens/dino_game.dart'; // Import DinoGame screen
 import 'package:game_arcade/screens/game_submission_form.dart';
 import 'package:game_arcade/screens/leaderboard_screen.dart'; // Import Leaderboard screen
 import 'package:game_arcade/screens/notifications_screens.dart'; // Import Notifications screen
 import 'package:game_arcade/screens/user_profile_screen.dart'; // Import User Profile screen
 import 'game_detail_screen.dart';
+import 'package:game_arcade/screens/flappy_bird_game_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -129,7 +131,7 @@ class HomeContent extends StatelessWidget {
       "Puzzle",
       "Shooter",
       "Dino Run",
-      "Strategy"
+      "FlappyBird" // Add FlappyBird to the list
     ];
 
     return Padding(
@@ -150,6 +152,13 @@ class HomeContent extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => const MyHomePage(title: 'Dino Run'),
+                  ),
+                );
+              } else if (games[index] == "FlappyBird") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const game2.GameScreen(), // Correctly points to FlappyBirdGame
                   ),
                 );
               } else {
@@ -173,7 +182,14 @@ class HomeContent extends StatelessWidget {
                 children: [
                   if (games[index] == "Dino Run")
                     Image.asset(
-                      'assets/images/dono.jpg', // Path to your image
+                      'assets/images/dono.jpg', // Path to Dino Run image
+                      height: 80,
+                      width: 80,
+                      fit: BoxFit.cover,
+                    ),
+                  if (games[index] == "FlappyBird")
+                    Image.asset(
+                      'assets/images/flappybird_icon.png', // Path to FlappyBird image
                       height: 80,
                       width: 80,
                       fit: BoxFit.cover,
