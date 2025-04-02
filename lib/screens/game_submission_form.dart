@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:game_arcade/controllers/game_submission_controller.dart';
 
 class GameSubmissionForm extends StatefulWidget {
@@ -13,45 +15,77 @@ class _GameSubmissionFormState extends State<GameSubmissionForm> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final GameSubmissionController _controller = GameSubmissionController();
+  final ImagePicker _picker = ImagePicker();
   bool _isSubmitting = false;
-  PlatformFile? _selectedGameFile;
-  List<PlatformFile> _selectedGamePictures = [];
+  File? _selectedGameFile;
+  XFile? _webGameFile;
+  String _gameFileName = '';
+  List<XFile> _selectedGamePictures = [];
 
   // Method to pick the game file
   Future<void> _pickGameFile() async {
-    final result = await FilePicker.platform.pickFiles();
+    try {
+      final XFile? result = await _picker.pickMedia();
 
-    if (result != null) {
-      setState(() {
-        _selectedGameFile = result.files.first;
-      });
+      if (result != null) {
+        setState(() {
+          if (kIsWeb) {
+            _webGameFile = result;
+          } else {
+            _selectedGameFile = File(result.path);
+          }
+          _gameFileName = result.name;
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error picking file: $e')),
+      );
     }
   }
 
   // Method to pick multiple game pictures
   Future<void> _pickGamePictures() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-      allowMultiple: true,
-    );
+    try {
+      final List<XFile>? result = await _picker.pickMultiImage();
 
-    if (result != null) {
-      setState(() {
-        _selectedGamePictures = result.files;
-      });
+      if (result != null) {
+        setState(() {
+          _selectedGamePictures = result;
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error picking images: $e')),
+      );
     }
   }
 
   // Method to submit the game
   Future<void> _submitGame() async {
-    if (_titleController.text.isEmpty ||
-        _descriptionController.text.isEmpty ||
-        _selectedGameFile == null ||
-        _selectedGamePictures.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields and select files')),
-      );
-      return;
+    // Different validation for web and mobile
+    if (kIsWeb) {
+      if (_titleController.text.isEmpty ||
+          _descriptionController.text.isEmpty ||
+          _webGameFile == null ||
+          _selectedGamePictures.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Please fill in all fields and select files')),
+        );
+        return;
+      }
+    } else {
+      if (_titleController.text.isEmpty ||
+          _descriptionController.text.isEmpty ||
+          _selectedGameFile == null ||
+          _selectedGamePictures.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Please fill in all fields and select files')),
+        );
+        return;
+      }
     }
 
     setState(() {
@@ -59,12 +93,23 @@ class _GameSubmissionFormState extends State<GameSubmissionForm> {
     });
 
     try {
-      await _controller.submitGame(
-        title: _titleController.text,
-        description: _descriptionController.text,
-        gameFile: _selectedGameFile!,
-        gamePictures: _selectedGamePictures,
-      );
+      if (kIsWeb) {
+        await _controller.submitGameWeb(
+          title: _titleController.text,
+          description: _descriptionController.text,
+          gameFile: _webGameFile!,
+          gameFileName: _gameFileName,
+          gamePictures: _selectedGamePictures,
+        );
+      } else {
+        await _controller.submitGame(
+          title: _titleController.text,
+          description: _descriptionController.text,
+          gameFile: _selectedGameFile!,
+          gameFileName: _gameFileName,
+          gamePictures: _selectedGamePictures,
+        );
+      }
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Game submitted successfully!')),
@@ -85,52 +130,69 @@ class _GameSubmissionFormState extends State<GameSubmissionForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Submit Your Game')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Game Title'),
-            ),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Game Description'),
-              maxLines: 5,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _pickGameFile,
-              child: const Text('Select Game File'),
-            ),
-            if (_selectedGameFile != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Text('Selected Game File: ${_selectedGameFile!.name}'),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextField(
+                controller: _titleController,
+                decoration: const InputDecoration(labelText: 'Game Title'),
               ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _pickGamePictures,
-              child: const Text('Select Game Pictures'),
-            ),
-            if (_selectedGamePictures.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: _selectedGamePictures
-                      .map((picture) => Text('Selected Picture: ${picture.name}'))
-                      .toList(),
+              TextField(
+                controller: _descriptionController,
+                decoration:
+                    const InputDecoration(labelText: 'Game Description'),
+                maxLines: 5,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _pickGameFile,
+                child: const Text('Select Game File'),
+              ),
+              if (_gameFileName.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text('Selected Game File: $_gameFileName'),
                 ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _pickGamePictures,
+                child: const Text('Select Game Pictures'),
               ),
-            const SizedBox(height: 20),
-            _isSubmitting
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: _submitGame,
-                    child: const Text('Submit'),
+              if (_selectedGamePictures.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: _selectedGamePictures
+                        .map((picture) =>
+                            Text('Selected Picture: ${picture.name}'))
+                        .toList(),
                   ),
-          ],
+                ),
+              const SizedBox(height: 20),
+              _isSubmitting
+                  ? const Center(child: CircularProgressIndicator())
+                  : ElevatedButton(
+                      onPressed: _submitGame,
+                      child: const Text('Submit'),
+                    ),
+              if (kIsWeb)
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    color: Colors.amber.withOpacity(0.2),
+                    child: const Text(
+                      'Note: The web version has different file handling than the mobile app.',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

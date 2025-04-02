@@ -46,7 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1098014362367',
     projectId: 'game-arcade-7edc5',
     authDomain: 'game-arcade-7edc5.firebaseapp.com',
-    storageBucket: 'game-arcade-7edc5.firebasestorage.app',
+    storageBucket: 'game-arcade-7edc5.appspot.com',
     measurementId: 'G-CHTM4F605T',
   );
 
@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
     appId: '1:1098014362367:android:199e41d83ee6aff4dd5aca',
     messagingSenderId: '1098014362367',
     projectId: 'game-arcade-7edc5',
-    storageBucket: 'game-arcade-7edc5.firebasestorage.app',
+    storageBucket: 'game-arcade-7edc5.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(

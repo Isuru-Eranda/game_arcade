@@ -42,7 +42,7 @@ dependencies:
 
   firebase_auth: ^5.5.1
   cloud_firestore: ^5.6.5
-  file_picker: ^5.2.3
+  image_picker: ^1.0.7
   firebase_storage: 12.4.4
   provider: ^6.1.3
 
@@ -50,10 +50,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
      
-
-
-
-
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -99,17 +95,3 @@ flutter:
     - family: Audiowide
       fonts:
         - asset: assets/fonts/Audiowide-Regular.ttf
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package
