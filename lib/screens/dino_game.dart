@@ -21,7 +21,7 @@ void main() async {
 }
 
 class DinoRunApp extends StatelessWidget {
-  const DinoRunApp({Key? key}) : super(key: key);
+  const DinoRunApp({super.key});
 
   @override
   Widget build(BuildContext context) {

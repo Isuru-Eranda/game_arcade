@@ -5,14 +5,13 @@ class HUD extends StatelessWidget {
   final Function onpausePressed;
   final ValueNotifier<int> life;
   const HUD({
-    Key? key,
+    super.key,
     required this.onpausePressed,
     required this.life,
     // ignore: unnecessary_null_comparison
     }) : assert(onpausePressed != null),
     // ignore: unnecessary_null_comparison
-    assert(life != null),
-    super(key: key);
+    assert(life != null);
 
   @override
   Widget build(BuildContext context) {

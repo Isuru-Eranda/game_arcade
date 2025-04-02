@@ -13,13 +13,17 @@ import 'package:game_arcade/games/game1/enemy_manager.dart';
 import 'package:game_arcade/games/game1/widgets/game_over_menu.dart';
 import 'package:game_arcade/games/game1/widgets/hud.dart';
 import 'package:game_arcade/games/game1/widgets/pause_menu.dart';
+import 'package:game_arcade/controllers/score_controller.dart';
 
 class DinoGame extends FlameGame with TapDetector, HasCollisionDetection {
   late final Dino _dino;
   late final ParallaxComponent _parallaxComponent;
   late final TextComponent _scoreText;
+  double _elapsedTime = 0;
   late final EnemyManager _enemyManager;
   int score = 0;
+
+  final ScoreController _scoreController = ScoreController(); // Add ScoreController
 
   DinoGame() {
     _dino = Dino();
@@ -96,8 +100,13 @@ class DinoGame extends FlameGame with TapDetector, HasCollisionDetection {
   @override
   void update(double dt) {
     super.update(dt);
-    score += (60 * dt).toInt();
-    _scoreText.text = score.toString();
+    _elapsedTime += dt;
+    if (_elapsedTime >(1/60)) {
+      _elapsedTime = 0;
+      score+= 1;
+      _scoreText.text = score.toString();
+    }
+    
 
     children.whereType<Enemy>().forEach((enemy) {
       if (_dino.distance(enemy) < 30) {
@@ -146,6 +155,13 @@ class DinoGame extends FlameGame with TapDetector, HasCollisionDetection {
 
   void gameOver() {
     pauseEngine();
+
+    // Save the score to Firestore
+    _scoreController.saveScore(
+      gameName: 'DinoGame',
+      score: score,
+    );
+
     overlays.add('GameOverMenu');
   }
 

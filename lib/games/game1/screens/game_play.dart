@@ -16,6 +16,7 @@ class GamePlay extends StatelessWidget {
       DeviceOrientation.landscapeRight,
     ]);
 
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         // Reset to portrait mode when exiting the game
