@@ -43,13 +43,44 @@ class _HomeScreenState extends State<HomeScreen> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        showSelectedLabels: false, // Hide selected item labels
+        showUnselectedLabels: false, // Hide unselected item labels
+        iconSize: 40.0, // Increased icon size
+        // Settings to bring icons closer to center
+        landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
+        unselectedIconTheme: const IconThemeData(size: 40.0),
+        selectedIconTheme: const IconThemeData(size: 40.0),
+        // Adding horizontal padding to push icons closer to center
+        elevation: 0,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.emoji_events), label: 'Leaderboard'),
+            icon: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Icon(Icons.home),
+            ),
+            label: '',
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: 'Notifications'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+            icon: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Icon(Icons.emoji_events),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              child: Icon(Icons.notifications),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              child: Icon(Icons.person),
+            ),
+            label: '',
+          ),
         ],
       ),
       body: IndexedStack(
@@ -83,10 +114,10 @@ class HomeContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(height: 10),
+          const SizedBox(height: 2),
           const Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+              padding: EdgeInsets.symmetric(horizontal: 14.0, vertical: 80.0),
               child: Text(
                 'GAME HUB',
                 style: TextStyle(
@@ -97,7 +128,7 @@ class HomeContent extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 0), // Removed vertical space between title and grid
           Expanded(child: _buildGameGrid(context)),
         ],
       ),
@@ -105,24 +136,24 @@ class HomeContent extends StatelessWidget {
   }
 
   Widget _buildGameGrid(BuildContext context) {
-    // Games list including Dino Run and FlappyBird
+    // Games list with FlappyBird as the second game in the first row
     List<String> games = [
       "Dino Run",
+      "FlappyBird",
       "Adventure",
       "Sports",
       "Puzzle",
-      "FlappyBird",
-      "Tetris", // Add Tetris to the games list
+      "Tetris", // Added Tetris to the games list
     ];
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 36.0),
+      padding: const EdgeInsets.symmetric(horizontal: 70.0, vertical: 10.0),
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          crossAxisSpacing: 28,
-          mainAxisSpacing: 28,
-          childAspectRatio: 0.85, // Adjusted for name below icon
+          crossAxisSpacing: 0, // Removed all horizontal spacing between icons
+          mainAxisSpacing: 0, // Removed all vertical spacing between icons
+          childAspectRatio: 0.9,
         ),
         itemCount: games.length,
         itemBuilder: (context, index) {
@@ -168,10 +199,15 @@ class HomeContent extends StatelessWidget {
                 Expanded(
                   child: Center(
                     child: Container(
-                      // Using styling from the shiraz branch
+                      width: 100,
+                      height: 100,
                       decoration: BoxDecoration(
                         color: Colors.grey[800],
                         borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.orange,
+                          width: 4.0,
+                        ),
                       ),
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
@@ -180,12 +216,12 @@ class HomeContent extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 0),
                 Text(
                   games[index],
                   style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
+                    color: Colors.orange,
+                    fontSize: 20,
                     fontWeight: FontWeight.normal,
                   ),
                 ),
@@ -216,7 +252,7 @@ class HomeContent extends StatelessWidget {
     } else if (gameName == "Tetris") {
       // Use a special icon for Tetris
       return Icon(
-        Icons.grid_3x3,
+        Icons.grid_view,
         size: 40,
         color: Colors.purple,
       );
@@ -238,7 +274,7 @@ class HomeContent extends StatelessWidget {
       case "Puzzle":
         return Icons.extension;
       case "Tetris":
-        return Icons.grid_3x3;
+        return Icons.grid_view;
       case "Shooter":
         return Icons.sports_esports;
       case "Strategy":

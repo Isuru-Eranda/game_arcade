@@ -28,9 +28,10 @@ class MyButtons extends StatelessWidget {
           child: Text(
             text,
             style: const TextStyle(
-              fontSize: 20,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              color: Colors.black,
+              fontWeight: FontWeight.normal,
+              fontFamily: 'Jersey10',
             ),
           ),
         ),
