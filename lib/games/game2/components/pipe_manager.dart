@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:game_arcade/games/game2/constants.dart';
-import 'package:game_arcade/game.dart';
+import 'package:game_arcade/games/game2/game.dart';
 import 'package:game_arcade/games/game2/components/pipe.dart';
 
 
