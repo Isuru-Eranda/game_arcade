@@ -95,3 +95,6 @@ flutter:
     - family: Audiowide
       fonts:
         - asset: assets/fonts/Audiowide-Regular.ttf
+    - family: Jersey10
+      fonts:
+        - asset: assets/fonts/Jersey10/Jersey10-Regular.ttf

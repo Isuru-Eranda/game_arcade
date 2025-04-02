@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:game_arcade/screens/dino_game.dart'; // Import DinoGame screen
+import 'package:game_arcade/screens/dino_game.dart'; 
 import 'package:game_arcade/screens/game_submission_form.dart';
-import 'package:game_arcade/screens/leaderboard_screen.dart'; // Import Leaderboard screen
-import 'package:game_arcade/screens/notifications_screens.dart'; // Import Notifications screen
-import 'package:game_arcade/screens/user_profile_screen.dart'; // Import User Profile screen
+import 'package:game_arcade/screens/leaderboard_screen.dart';
+import 'package:game_arcade/screens/notifications_screens.dart';
+import 'package:game_arcade/screens/user_profile_screen.dart';
 import 'game_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.transparent,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFFFD9801),
         selectedItemColor: Colors.white,
@@ -76,69 +76,46 @@ class HomeContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center, // Changed to center
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-            child: Text(
-              'GAME HUB',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+          const SizedBox(height: 10),
+          const Center( // Added Center widget
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+              child: Text(
+                'GAME HUB',
+                style: TextStyle(
+                  fontSize: 38,
+                  fontWeight: FontWeight.normal, // Changed from bold to normal
+                  color: Colors.orange,
+                ),
               ),
             ),
           ),
           const SizedBox(height: 10),
-          _buildCategoryTabs(),
           Expanded(child: _buildGameGrid(context)),
         ],
       ),
     );
   }
 
-  Widget _buildCategoryTabs() {
-    List<String> categories = ["Adventure", "Sports", "Puzzle", "Shooter"];
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: categories
-              .map(
-                (category) => Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Chip(
-                    label: Text(category),
-                    backgroundColor: Colors.grey[800],
-                    labelStyle: const TextStyle(color: Colors.white),
-                  ),
-                ),
-              )
-              .toList(),
-        ),
-      ),
-    );
-  }
-
   Widget _buildGameGrid(BuildContext context) {
+    // Take only the first 4 games for a 2x2 grid
     List<String> games = [
+      "Dino Run",
       "Adventure",
       "Sports",
       "Puzzle",
-      "Shooter",
-      "Dino Run",
-      "Strategy"
     ];
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 36.0),
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
+          crossAxisSpacing: 28,
+          mainAxisSpacing: 28,
+          childAspectRatio: 0.85, // Adjusted for name below icon
         ),
         itemCount: games.length,
         itemBuilder: (context, index) {
@@ -157,38 +134,77 @@ class HomeContent extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        GameDetailScreen(gameName: games[index]),
+                    builder: (context) => GameDetailScreen(gameName: games[index]),
                   ),
                 );
               }
             },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[800],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (games[index] == "Dino Run")
-                    Image.asset(
-                      'assets/images/dono.jpg', // Path to your image
-                      height: 80,
-                      width: 80,
-                      fit: BoxFit.cover,
+            child: Column(
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.25, // Adjusted container size
+                      height: MediaQuery.of(context).size.width * 0.25, // Adjusted container size
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.orange, width: 2), // Made border thinner
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0), // Small padding inside the border
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: index == 0 ? 
+                            Image.asset(
+                              'assets/images/dono.jpg',
+                              fit: BoxFit.contain, // Changed to contain to prevent cropping
+                            ) :
+                            Container(
+                              color: Colors.grey[800],
+                              child: Center(
+                                child: Icon(
+                                  _getIconForGame(games[index]),
+                                  size: 40, // Adjusted icon size
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                        ),
+                      ),
                     ),
-                  const SizedBox(height: 10),
-                  Text(
-                    games[index],
-                    style: const TextStyle(color: Colors.white),
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  games[index],
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal, // Changed from bold to normal
+                  ),
+                ),
+              ],
             ),
           );
         },
       ),
     );
+  }
+
+  IconData _getIconForGame(String gameName) {
+    switch (gameName) {
+      case "Adventure":
+        return Icons.castle;
+      case "Sports":
+        return Icons.sports_soccer;
+      case "Puzzle":
+        return Icons.extension;
+      case "Shooter":
+        return Icons.sports_esports;
+      case "Strategy":
+        return Icons.psychology;
+      default:
+        return Icons.videogame_asset;
+    }
   }
 }
