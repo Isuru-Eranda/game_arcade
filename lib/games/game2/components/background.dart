@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flame/components.dart';
-import 'package:game_arcade/game.dart';
+import 'package:game_arcade/games/game2/game.dart';
 
 class Background extends SpriteComponent with HasGameRef<FlappyBirdGame> {
   Background() : super(priority: -1); // Set priority for background

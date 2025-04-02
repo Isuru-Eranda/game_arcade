@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:game_arcade/games/game2/constants.dart';
-import 'package:game_arcade/game.dart';
+import 'package:game_arcade/games/game2/game.dart';
 import 'package:game_arcade/games/game2/components/ground.dart';
 import 'pipe.dart';
 
