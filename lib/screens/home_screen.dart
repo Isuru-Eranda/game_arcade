@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:game_arcade/games/game2/screens/game_screen.dart' as game2;
 import 'package:game_arcade/screens/dino_game.dart'; // Import DinoGame screen
 import 'package:game_arcade/screens/game_submission_form.dart';
-import 'package:game_arcade/screens/leaderboard_screen.dart'; // Import Leaderboard screen
-import 'package:game_arcade/screens/notifications_screens.dart'; // Import Notifications screen
-import 'package:game_arcade/screens/user_profile_screen.dart'; // Import User Profile screen
+import 'package:game_arcade/screens/leaderboard_screen.dart';
+import 'package:game_arcade/screens/notifications_screens.dart';
+import 'package:game_arcade/screens/user_profile_screen.dart';
 import 'game_detail_screen.dart';
-import 'package:game_arcade/screens/flappy_bird_game_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.transparent,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFFFD9801),
         selectedItemColor: Colors.white,
@@ -45,8 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.emoji_events), label: 'Leaderboard'),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notifications'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.emoji_events), label: 'Leaderboard'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications), label: 'Notifications'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
@@ -59,7 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const GameSubmissionForm()),
+                  MaterialPageRoute(
+                      builder: (context) => const GameSubmissionForm()),
                 );
               },
               backgroundColor: Colors.orange,
@@ -78,69 +80,47 @@ class HomeContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-            child: Text(
-              'GAME HUB',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+          const SizedBox(height: 10),
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+              child: Text(
+                'GAME HUB',
+                style: TextStyle(
+                  fontSize: 38,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.orange,
+                ),
               ),
             ),
           ),
           const SizedBox(height: 10),
-          _buildCategoryTabs(),
           Expanded(child: _buildGameGrid(context)),
         ],
       ),
     );
   }
 
-  Widget _buildCategoryTabs() {
-    List<String> categories = ["Adventure", "Sports", "Puzzle", "Shooter"];
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: categories
-              .map(
-                (category) => Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Chip(
-                    label: Text(category),
-                    backgroundColor: Colors.grey[800],
-                    labelStyle: const TextStyle(color: Colors.white),
-                  ),
-                ),
-              )
-              .toList(),
-        ),
-      ),
-    );
-  }
-
   Widget _buildGameGrid(BuildContext context) {
+    // Games list including Dino Run and FlappyBird
     List<String> games = [
+      "Dino Run",
       "Adventure",
       "Sports",
       "Puzzle",
-      "Shooter",
-      "Dino Run",
-      "FlappyBird" // Add FlappyBird to the list
+      "FlappyBird",
     ];
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 36.0),
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
+          crossAxisSpacing: 28,
+          mainAxisSpacing: 28,
+          childAspectRatio: 0.85, // Adjusted for name below icon
         ),
         itemCount: games.length,
         itemBuilder: (context, index) {
@@ -155,10 +135,11 @@ class HomeContent extends StatelessWidget {
                   ),
                 );
               } else if (games[index] == "FlappyBird") {
+                // Navigate to FlappyBird (game2) screen
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const game2.GameScreen(), // Correctly points to FlappyBirdGame
+                    builder: (context) => const game2.GameScreen(),
                   ),
                 );
               } else {
@@ -172,39 +153,79 @@ class HomeContent extends StatelessWidget {
                 );
               }
             },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[800],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (games[index] == "Dino Run")
-                    Image.asset(
-                      'assets/images/dono.jpg', // Path to Dino Run image
-                      height: 80,
-                      width: 80,
-                      fit: BoxFit.cover,
+            child: Column(
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Container(
+                      // Using styling from the shiraz branch
+                      decoration: BoxDecoration(
+                        color: Colors.grey[800],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: _buildGameIcon(games[index]),
+                      ),
                     ),
-                  if (games[index] == "FlappyBird")
-                    Image.asset(
-                      'assets/images/flappybird_icon.png', // Path to FlappyBird image
-                      height: 80,
-                      width: 80,
-                      fit: BoxFit.cover,
-                    ),
-                  const SizedBox(height: 10),
-                  Text(
-                    games[index],
-                    style: const TextStyle(color: Colors.white),
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  games[index],
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
             ),
           );
         },
       ),
     );
+  }
+
+  // Helper method to build the game icon or image
+  Widget _buildGameIcon(String gameName) {
+    if (gameName == "Dino Run") {
+      return Image.asset(
+        'assets/images/dono.jpg', // Path to Dino Run image
+        height: 80,
+        width: 80,
+        fit: BoxFit.cover,
+      );
+    } else if (gameName == "FlappyBird") {
+      return Image.asset(
+        'assets/images/flappybird_icon.png', // Path to FlappyBird image
+        height: 80,
+        width: 80,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Icon(
+        _getIconForGame(gameName),
+        size: 40,
+        color: Colors.white,
+      );
+    }
+  }
+
+  IconData _getIconForGame(String gameName) {
+    switch (gameName) {
+      case "Adventure":
+        return Icons.castle;
+      case "Sports":
+        return Icons.sports_soccer;
+      case "Puzzle":
+        return Icons.extension;
+      case "Shooter":
+        return Icons.sports_esports;
+      case "Strategy":
+        return Icons.psychology;
+      default:
+        return Icons.videogame_asset;
+    }
   }
 }

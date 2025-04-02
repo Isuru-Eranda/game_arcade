@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final authController = Provider.of<AuthController>(context);
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      backgroundColor: Colors.transparent,
       body: SafeArea(
         child: SingleChildScrollView(
           child: SizedBox(
@@ -88,6 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
+                        color: Colors.white,
                       ),
                     ),
                     GestureDetector(
