@@ -4,6 +4,7 @@ import 'package:game_arcade/screens/dino_game.dart'; // Import DinoGame screen
 import 'package:game_arcade/screens/game_submission_form.dart';
 import 'package:game_arcade/screens/leaderboard_screen.dart';
 import 'package:game_arcade/screens/notifications_screens.dart';
+import 'package:game_arcade/screens/tetris_game_screen.dart'; // Add Tetris game screen import
 import 'package:game_arcade/screens/user_profile_screen.dart';
 import 'game_detail_screen.dart';
 
@@ -142,6 +143,7 @@ class HomeContent extends StatelessWidget {
       "Adventure",
       "Sports",
       "Puzzle",
+      "Tetris", // Added Tetris to the games list
     ];
 
     return Padding(
@@ -171,6 +173,14 @@ class HomeContent extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => const game2.GameScreen(),
+                  ),
+                );
+              } else if (games[index] == "Tetris") {
+                // Navigate to Tetris game screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TetrisGameScreen(),
                   ),
                 );
               } else {
@@ -239,6 +249,13 @@ class HomeContent extends StatelessWidget {
         width: 80,
         fit: BoxFit.cover,
       );
+    } else if (gameName == "Tetris") {
+      // Use a special icon for Tetris
+      return Icon(
+        Icons.grid_view,
+        size: 40,
+        color: Colors.purple,
+      );
     } else {
       return Icon(
         _getIconForGame(gameName),
@@ -256,6 +273,8 @@ class HomeContent extends StatelessWidget {
         return Icons.sports_soccer;
       case "Puzzle":
         return Icons.extension;
+      case "Tetris":
+        return Icons.grid_view;
       case "Shooter":
         return Icons.sports_esports;
       case "Strategy":
