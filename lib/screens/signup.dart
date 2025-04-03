@@ -36,11 +36,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
       isLoading = true;
     });
 
+    // Check if the email belongs to an admin
+    final adminEmails = ['admin@example.com', 'superadmin@example.com']; // Predefined admin emails
+    final isAdmin = adminEmails.contains(emailController.text.trim());
+
     // Create a SignupModel and pass it to the controller
     final signupModel = SignupModel(
       name: nameController.text.trim(),
       email: emailController.text.trim(),
       password: passwordController.text.trim(),
+      isAdmin: isAdmin, // Automatically set admin status
     );
 
     String res = await authController.signupUser(signupModel);
@@ -50,7 +55,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
 
     if (res == "success") {
-      Navigator.pushReplacementNamed(context, '/home');
+      if (isAdmin) {
+        Navigator.pushReplacementNamed(context, '/adminPanel'); // Redirect to Admin Panel
+      } else {
+        Navigator.pushReplacementNamed(context, '/home'); // Redirect to Home Screen
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(res)));
     }
@@ -70,7 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(
                 width: double.infinity,
                 height: height / 2.7,
-                child: Image.asset('assets/game_logo.jpg'),
+                child: Image.asset('assets/game_logo.png'),
               ),
               TextFieldInput(
                 icon: Icons.person,

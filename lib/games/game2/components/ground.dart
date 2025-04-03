@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/collisions.dart';
-import 'package:game_arcade/game.dart';
+import 'package:game_arcade/games/game2/game.dart';
 
 class Ground extends SpriteComponent with HasGameRef<FlappyBirdGame>, CollisionCallbacks {
   Ground() : super(priority: 1);

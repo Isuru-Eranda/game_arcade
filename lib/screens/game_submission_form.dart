@@ -22,6 +22,9 @@ class _GameSubmissionFormState extends State<GameSubmissionForm> {
   String _gameFileName = '';
   List<XFile> _selectedGamePictures = [];
 
+  // Theme color for all text
+  final Color _textColor = Colors.orange;
+
   // Method to pick the game file
   Future<void> _pickGameFile() async {
     try {
@@ -129,69 +132,152 @@ class _GameSubmissionFormState extends State<GameSubmissionForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Submit Your Game')),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextField(
-                controller: _titleController,
-                decoration: const InputDecoration(labelText: 'Game Title'),
+      appBar: AppBar(
+        title: Text(
+          'Submit Your Game', 
+          style: TextStyle(
+            color: _textColor,
+            fontSize: 32.0, // Increased font size from default
+            fontWeight: FontWeight.normal,
+          )
+        ),
+        toolbarHeight: 80, // Increased height of the AppBar
+        titleSpacing: 0,
+        centerTitle: true, // Center the title
+        iconTheme: IconThemeData(color: Colors.orange), // Makes the back button orange
+        // Add top padding to push content down from top of screen
+        flexibleSpace: Container(
+          padding: EdgeInsets.only(top: 26.0),
+        ),
+      ),
+      body: Theme(
+        data: Theme.of(context).copyWith(
+          textTheme: Theme.of(context).textTheme.apply(
+                bodyColor: _textColor,
+                displayColor: _textColor,
               ),
-              TextField(
-                controller: _descriptionController,
-                decoration:
-                    const InputDecoration(labelText: 'Game Description'),
-                maxLines: 5,
+          inputDecorationTheme: InputDecorationTheme(
+            labelStyle: TextStyle(color: _textColor),
+            hintStyle: TextStyle(color: _textColor),
+          ),
+          // Add theme-wide text selection color and cursor color
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: Colors.orange,
+            selectionColor: Colors.orange.withOpacity(0.3),
+            selectionHandleColor: Colors.orange,
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange,
+              foregroundColor: Colors.black,
+              textStyle: const TextStyle(
+                fontWeight: FontWeight.normal,
+                fontFamily: 'Jersey10',
+                fontSize: 24,
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _pickGameFile,
-                child: const Text('Select Game File'),
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
               ),
-              if (_gameFileName.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text('Selected Game File: $_gameFileName'),
+            ),
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextField(
+                  controller: _titleController,
+                  decoration: InputDecoration(
+                    labelText: 'Game Title',
+                    labelStyle: TextStyle(color: _textColor),
+                  ),
+                  style: TextStyle(color: _textColor),
+                  cursorColor: Colors.orange,
+                  cursorWidth: 2.0,
                 ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _pickGamePictures,
-                child: const Text('Select Game Pictures'),
-              ),
-              if (_selectedGamePictures.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: _selectedGamePictures
-                        .map((picture) =>
-                            Text('Selected Picture: ${picture.name}'))
-                        .toList(),
+                const SizedBox(height: 16.0),
+                TextField(
+                  controller: _descriptionController,
+                  decoration: InputDecoration(
+                    labelText: 'Game Description',
+                    labelStyle: TextStyle(color: _textColor),
+                  ),
+                  style: TextStyle(color: _textColor),
+                  cursorColor: Colors.orange,
+                  cursorWidth: 2.0,
+                  maxLines: 5,
+                ),
+                const SizedBox(height: 24.0),
+                ElevatedButton(
+                  onPressed: _pickGameFile,
+                  child: Text(
+                    'Select Game File',
+                    style: TextStyle(fontSize: 24),
                   ),
                 ),
-              const SizedBox(height: 20),
-              _isSubmitting
-                  ? const Center(child: CircularProgressIndicator())
-                  : ElevatedButton(
-                      onPressed: _submitGame,
-                      child: const Text('Submit'),
-                    ),
-              if (kIsWeb)
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    color: Colors.amber.withOpacity(0.2),
-                    child: const Text(
-                      'Note: The web version has different file handling than the mobile app.',
-                      style: TextStyle(fontStyle: FontStyle.italic),
+                if (_gameFileName.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      'Selected Game File: $_gameFileName',
+                      style: TextStyle(color: _textColor),
                     ),
                   ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _pickGamePictures,
+                  child: Text(
+                    'Select Game Pictures',
+                    style: TextStyle(fontSize: 24),
+                  ),
                 ),
-            ],
+                if (_selectedGamePictures.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: _selectedGamePictures
+                          .map((picture) => Text(
+                                'Selected Picture: ${picture.name}',
+                                style: TextStyle(color: _textColor),
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                const SizedBox(height: 20),
+                _isSubmitting
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: _textColor,
+                        ),
+                      )
+                    : ElevatedButton(
+                        onPressed: _submitGame,
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                      ),
+                if (kIsWeb)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      color: Colors.amber.withOpacity(0.2),
+                      child: Text(
+                        'Note: The web version has different file handling than the mobile app.',
+                        style: TextStyle(
+                          color: _textColor,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
