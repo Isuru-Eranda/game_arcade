@@ -3,7 +3,6 @@ import 'package:game_arcade/games/game2/screens/game_screen.dart' as game2;
 import 'package:game_arcade/screens/dino_game.dart'; // Import DinoGame screen
 import 'package:game_arcade/screens/game_submission_form.dart';
 import 'package:game_arcade/screens/leaderboard_screen.dart';
-import 'package:game_arcade/screens/notifications_screens.dart';
 import 'package:game_arcade/screens/tetris_game_screen.dart'; // Add Tetris game screen import
 import 'package:game_arcade/screens/user_profile_screen.dart';
 import 'game_detail_screen.dart';
@@ -24,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = [
     const HomeContent(), // Home content
     const LeaderboardScreen(), // Leaderboard screen
-    const NotificationsScreen(), // Notifications screen
+    const NotificationScreen(), // Notifications screen
     const UserProfileScreen(), // User Profile screen
   ];
 
@@ -71,20 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: IconButton(
-                icon: const Icon(Icons.notifications),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const NotificationScreen()),
-                  );
-                },
-                tooltip: 'Notifications',
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Icon(Icons.notifications),
             ),
-            label: '',
+            label: 'Notifications',
           ),
           BottomNavigationBarItem(
             icon: Padding(
