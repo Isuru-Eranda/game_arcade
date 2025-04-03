@@ -366,9 +366,9 @@ class _GameBoardState extends State<GameBoard> {
                   const Text(
                     'PAUSED',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      color: const Color(0xFFFAFAFA),
+                      fontWeight: FontWeight.normal,
                     ),
                   ),
                   const SizedBox(height: 20),

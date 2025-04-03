@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const Text(
                       "Don't have an account? ",
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.normal,
                         fontSize: 16,
                         color: Colors.white,
                       ),
@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: const Text(
                         "Sign Up",
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.normal,
                           fontSize: 16,
                           color: Colors.orange,
                         ),

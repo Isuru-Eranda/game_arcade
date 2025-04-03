@@ -16,7 +16,7 @@ class GameDetailScreen extends StatelessWidget {
       body: Center(
         child: Text(
           'Welcome to $gameName',
-          style: const TextStyle(color: Colors.white, fontSize: 24),
+          style: const TextStyle(color: Colors.orange, fontSize: 24),
         ),
       ),
     );

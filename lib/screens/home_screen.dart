@@ -3,11 +3,10 @@ import 'package:game_arcade/games/game2/screens/game_screen.dart' as game2;
 import 'package:game_arcade/screens/dino_game.dart'; // Import DinoGame screen
 import 'package:game_arcade/screens/game_submission_form.dart';
 import 'package:game_arcade/screens/leaderboard_screen.dart';
+import 'package:game_arcade/screens/notification_screen.dart'; // Using existing file
 import 'package:game_arcade/screens/tetris_game_screen.dart'; // Add Tetris game screen import
 import 'package:game_arcade/screens/user_profile_screen.dart';
 import 'game_detail_screen.dart';
-import 'package:flutter/material.dart';
-import 'notification_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -53,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedIconTheme: const IconThemeData(size: 40.0),
         // Adding horizontal padding to push icons closer to center
         elevation: 0,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -70,10 +69,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
               child: Icon(Icons.notifications),
             ),
-            label: 'Notifications',
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: Padding(
@@ -84,23 +83,50 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _screens,
+      body: Stack(
+        children: [
+          IndexedStack(
+            index: _selectedIndex,
+            children: _screens,
+          ),
+          // Show the Add Game button only on the Home tab
+          if (_selectedIndex == 0)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 40, // Position above the bottom navigation bar
+              child: Center(
+                child: SizedBox(
+                  width: 250, // Set width for the long button
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const GameSubmissionForm()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
+                    ),
+                    child: const Text(
+                      'Add Game',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
-      floatingActionButton: _selectedIndex == 0
-          ? FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const GameSubmissionForm()),
-                );
-              },
-              backgroundColor: Colors.orange,
-              child: const Icon(Icons.add),
-            )
-          : null, // Show FAB only on the Home tab
     );
   }
 }
@@ -129,8 +155,7 @@ class HomeContent extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-              height: 0), // Removed vertical space between title and grid
+          const SizedBox(height: 0), // Removed vertical space between title and grid
           Expanded(child: _buildGameGrid(context)),
         ],
       ),
@@ -138,11 +163,14 @@ class HomeContent extends StatelessWidget {
   }
 
   Widget _buildGameGrid(BuildContext context) {
-    // Games list with only Dino Run, FlappyBird, and Tetris
+    // Games list with FlappyBird as the second game in the first row
     List<String> games = [
       "Dino Run",
       "FlappyBird",
-      "Tetris",
+      "Adventure",
+      "Sports",
+      "Puzzle",
+      "Tetris", // Added Tetris to the games list
     ];
 
     return Padding(
@@ -201,14 +229,14 @@ class HomeContent extends StatelessWidget {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                        color: Colors.grey[800],
+                        color: Colors.transparent, // Changed to transparent for all games
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                           color: Colors.orange,
                           width: 4.0,
                         ),
                       ),
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.zero, // Remove padding for all games
                       child: Center(
                         child: _buildGameIcon(games[index]),
                       ),
@@ -235,25 +263,34 @@ class HomeContent extends StatelessWidget {
   // Helper method to build the game icon or image
   Widget _buildGameIcon(String gameName) {
     if (gameName == "Dino Run") {
-      return Image.asset(
-        'assets/images/dono.jpg', // Path to Dino Run image
-        height: 80,
-        width: 80,
-        fit: BoxFit.cover,
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(6),
+        child: Image.asset(
+          'assets/images/dino.png',
+          height: 100,
+          width: 100,
+          fit: BoxFit.cover,
+        ),
       );
     } else if (gameName == "FlappyBird") {
-      return Image.asset(
-        'assets/images/flappybird_icon.png', // Path to FlappyBird image
-        height: 80,
-        width: 80,
-        fit: BoxFit.cover,
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(6),
+        child: Image.asset(
+          'assets/images/flappybird.png',
+          height: 100,
+          width: 100,
+          fit: BoxFit.cover,
+        ),
       );
     } else if (gameName == "Tetris") {
-      // Use a special icon for Tetris
-      return Icon(
-        Icons.grid_view,
-        size: 40,
-        color: Colors.purple,
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(6),
+        child: Image.asset(
+          'assets/images/tetris.png',
+          height: 100,
+          width: 100,
+          fit: BoxFit.cover,
+        ),
       );
     } else {
       return Icon(

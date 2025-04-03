@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:game_arcade/firebase_options.dart';
 import 'package:game_arcade/screens/admin_panel.dart';
+import 'package:game_arcade/screens/edit_profile_screen.dart'; // Import EditProfileScreen
 import 'package:game_arcade/screens/home_screen.dart';
 import 'package:game_arcade/screens/leaderboard_screen.dart';
 import 'package:game_arcade/screens/signup.dart';
 import 'package:provider/provider.dart';
 import 'package:game_arcade/controllers/auth_controller.dart';
+import 'package:game_arcade/controllers/profile_controller.dart'; // Import ProfileController
 import 'package:game_arcade/screens/login.dart';
 
 void main() async {
@@ -18,6 +20,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthController()),
+        ChangeNotifierProvider(create: (_) => ProfileController()), // Add ProfileController
       ],
       child: const GameArcadeApp(),
     ),
@@ -74,6 +77,7 @@ class GameArcadeApp extends StatelessWidget {
           '/home': (context) => const HomeScreen(),
           '/adminPanel': (context) => const AdminPanel(),
           '/leaderboard': (context) => const LeaderboardScreen(), // Add this line
+          '/editProfile': (context) => const EditProfileScreen(), // Add EditProfileScreen route
         },
       ),
     );

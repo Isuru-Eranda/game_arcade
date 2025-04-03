@@ -48,8 +48,9 @@ class _AdminPanelState extends State<AdminPanel> {
                       Text(
                         'Title: ${data['title']}',
                         style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                          color: Colors.orange,
                           fontSize: 18,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
                       const SizedBox(height: 5),

@@ -141,13 +141,13 @@ class _GameSubmissionFormState extends State<GameSubmissionForm> {
             fontWeight: FontWeight.normal,
           )
         ),
-        toolbarHeight: 80, // Increased height of the AppBar
+        toolbarHeight: 180, // Increased height of the AppBar from 80 to 180
         titleSpacing: 0,
         centerTitle: true, // Center the title
         iconTheme: IconThemeData(color: Colors.orange), // Makes the back button orange
         // Add top padding to push content down from top of screen
         flexibleSpace: Container(
-          padding: EdgeInsets.only(top: 26.0),
+          padding: EdgeInsets.only(top: 180.0), // Increased from 26.0 to create more gap at the top
         ),
       ),
       body: Theme(

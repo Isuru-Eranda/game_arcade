@@ -29,7 +29,7 @@ class LeaderboardScreen extends StatelessWidget {
                 children: [
                   CircularProgressIndicator(color: Colors.orange),
                   SizedBox(height: 20),
-                  Text('Loading leaderboard...', style: TextStyle(color: Colors.white)),
+                  Text('Loading leaderboard...', style: TextStyle(color: Colors.orange)),
                 ],
               ),
             );
@@ -40,7 +40,7 @@ class LeaderboardScreen extends StatelessWidget {
                 children: [
                   Icon(Icons.error, color: Colors.red, size: 48),
                   SizedBox(height: 16),
-                  Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.white)),
+                  Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.orange)),
                   ElevatedButton(
                     onPressed: () => Navigator.pushReplacement(
                       context, 
@@ -58,7 +58,7 @@ class LeaderboardScreen extends StatelessWidget {
                 children: [
                   Icon(Icons.leaderboard, color: Colors.grey, size: 48),
                   SizedBox(height: 16),
-                  Text('No leaderboard data available', style: TextStyle(color: Colors.white)),
+                  Text('No leaderboard data available', style: TextStyle(color: Colors.orange)),
                 ],
               ),
             );
@@ -79,11 +79,11 @@ class LeaderboardScreen extends StatelessWidget {
                 ),
                 title: Text(
                   user['username'],
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
                 ),
                 trailing: Text(
                   'Score: ${user['totalScore']}', 
-                  style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.orange, fontWeight: FontWeight.normal),
                 ),
               );
             },

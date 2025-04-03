@@ -47,7 +47,7 @@ class SplashScreenState extends State<SplashScreen> {
               'GAME ARCADE',
               style: TextStyle(
                 fontSize: 40,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.normal,
                 color: Colors.white,
                 fontFamily: 'PressStart2P',
               ),

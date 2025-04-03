@@ -44,7 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final signupModel = SignupModel(
       name: nameController.text.trim(),
       email: emailController.text.trim(),
-      password: passwordController.text.trim(),
+      password: emailController.text.trim(),
       isAdmin: isAdmin, // Automatically set admin status
     );
 
@@ -111,7 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const Text(
                     "Already have an account? ",
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                       fontSize: 16,
                       color: Colors.white,
                     ),
@@ -128,7 +128,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: const Text(
                       "Login",
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.normal,
                         fontSize: 16,
                         color: Colors.orange,
                       ),

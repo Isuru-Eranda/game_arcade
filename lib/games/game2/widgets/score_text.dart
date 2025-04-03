@@ -11,7 +11,7 @@ class ScoreText extends StatelessWidget {
       'Score: $score',
       style: const TextStyle(
         fontSize: 24,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.normal,
         color: Colors.white,
       ),
     );
