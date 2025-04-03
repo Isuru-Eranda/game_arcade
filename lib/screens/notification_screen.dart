@@ -52,7 +52,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ? const Center(
               child: Text(
                 'No notifications',
-                style: TextStyle(fontSize: 18, color: Colors.grey),
+                style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
             )
           : ListView.builder(
@@ -115,14 +115,14 @@ class NotificationTile extends StatelessWidget {
             Text(
               notification.message,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 16,
               ),
             ),
             const SizedBox(height: 4),
             Text(
               notification.time,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 16,
                 color: Colors.grey.shade600,
                 fontStyle: FontStyle.italic,
               ),

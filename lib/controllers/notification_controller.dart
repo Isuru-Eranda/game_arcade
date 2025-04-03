@@ -11,7 +11,26 @@ class NotificationController {
   NotificationController._internal();
 
   // Sample notification data - in a real app this would be fetched from a database or API
-  final List<NotificationItem> notifications = [];
+  final List<NotificationItem> notifications = [
+    NotificationItem(
+      title: "New Game Added",
+      message: "Check out the latest game in our collection!",
+      time: "2 hours ago",
+      isRead: false,
+    ),
+    NotificationItem(
+      title: "Weekly Challenge",
+      message: "New weekly challenge is available now",
+      time: "1 day ago",
+      isRead: true,
+    ),
+    NotificationItem(
+      title: "Achievement Unlocked",
+      message: "You've reached level 5 in Space Invaders!",
+      time: "3 days ago",
+      isRead: true,
+    ),
+  ];
 
   void clearAllNotifications() {
     notifications.clear();
