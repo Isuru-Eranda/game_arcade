@@ -15,26 +15,38 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Notifications',
-          style: TextStyle(color: Colors.orange),
-        ),
-        iconTheme: const IconThemeData(color: Colors.orange),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete_outline, color: Colors.orange),
-            onPressed: () {
-              setState(() {
-                _controller.clearAllNotifications();
-              });
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('All notifications cleared')),
-              );
-            },
-            tooltip: 'Clear all',
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(110), // Maintaining the increased height
+        child: SafeArea(
+          child: AppBar(
+            centerTitle: false,
+            title: const Padding(
+              padding: EdgeInsets.only(top: 20.0), // Reduced padding
+              child: Text(
+                'Notifications',
+                style: TextStyle(color: Colors.orange, fontSize: 28, fontWeight: FontWeight.normal),
+              ),
+            ),
+            iconTheme: const IconThemeData(color: Colors.orange),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0, right: 10.0), // Adjusted padding with right padding added
+                child: IconButton(
+                  icon: const Icon(Icons.delete_outline, color: Colors.orange, size: 28), // Increased icon size for better visibility
+                  onPressed: () {
+                    setState(() {
+                      _controller.clearAllNotifications();
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('All notifications cleared')),
+                    );
+                  },
+                  tooltip: 'Clear all',
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
       body: _controller.notifications.isEmpty
           ? const Center(
