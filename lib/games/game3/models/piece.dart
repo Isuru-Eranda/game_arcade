@@ -1,6 +1,6 @@
 import 'dart:ui';
-import 'package:game_arcade/games/game3/board.dart';
-import 'package:game_arcade/games/game3/values.dart';
+import 'package:game_arcade/games/game3/screens/board.dart';
+import 'package:game_arcade/games/game3/models/values.dart';
 
 class Piece {
   // type of tetris piece

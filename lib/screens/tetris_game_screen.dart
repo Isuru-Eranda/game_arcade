@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:game_arcade/games/game3/board.dart';
+import 'package:game_arcade/games/game3/screens/board.dart';
 
 class TetrisGameScreen extends StatelessWidget {
   const TetrisGameScreen({super.key});

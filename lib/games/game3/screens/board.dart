@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:game_arcade/games/game3/piece.dart';
-import 'package:game_arcade/games/game3/pixel.dart';
-import 'package:game_arcade/games/game3/values.dart';
+import 'package:game_arcade/games/game3/models/piece.dart';
+import 'package:game_arcade/games/game3/widgets/pixel.dart';
+import 'package:game_arcade/games/game3/models/values.dart';
 import 'package:game_arcade/controllers/score_controller.dart';
 
 // Create game board
