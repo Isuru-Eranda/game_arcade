@@ -6,7 +6,6 @@ import 'package:game_arcade/screens/leaderboard_screen.dart';
 import 'package:game_arcade/screens/notification_screen.dart'; // Using existing file
 import 'package:game_arcade/screens/tetris_game_screen.dart'; // Add Tetris game screen import
 import 'package:game_arcade/screens/user_profile_screen.dart';
-import 'game_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -144,7 +143,7 @@ class HomeContent extends StatelessWidget {
           const SizedBox(height: 2),
           const Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14.0, vertical: 80.0),
+              padding: EdgeInsets.symmetric(horizontal: 14.0, vertical: 60.0), // Reduced vertical padding from 80.0 to 40.0
               child: Text(
                 'GAME HUB',
                 style: TextStyle(
@@ -155,31 +154,27 @@ class HomeContent extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 0), // Removed vertical space between title and grid
-          Expanded(child: _buildGameGrid(context)),
+          Expanded(child: _buildGameGrid(context)), // Removed SizedBox height between title and grid
         ],
       ),
     );
   }
 
   Widget _buildGameGrid(BuildContext context) {
-    // Games list with FlappyBird as the second game in the first row
+    // Kept only the three specified games
     List<String> games = [
       "Dino Run",
       "FlappyBird",
-      "Adventure",
-      "Sports",
-      "Puzzle",
-      "Tetris", // Added Tetris to the games list
+      "Tetris",
     ];
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 70.0, vertical: 10.0),
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 0, // Removed all horizontal spacing between icons
-          mainAxisSpacing: 0, // Removed all vertical spacing between icons
+          crossAxisCount: 2, // Changed to 1 column since we only have 3 games now
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 20, // Added some vertical spacing between games
           childAspectRatio: 0.9,
         ),
         itemCount: games.length,
@@ -210,15 +205,6 @@ class HomeContent extends StatelessWidget {
                     builder: (context) => const TetrisGameScreen(),
                   ),
                 );
-              } else {
-                // Navigate to GameDetailScreen for other games
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        GameDetailScreen(gameName: games[index]),
-                  ),
-                );
               }
             },
             child: Column(
@@ -229,14 +215,14 @@ class HomeContent extends StatelessWidget {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                        color: Colors.transparent, // Changed to transparent for all games
+                        color: Colors.transparent,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                           color: Colors.orange,
                           width: 4.0,
                         ),
                       ),
-                      padding: EdgeInsets.zero, // Remove padding for all games
+                      padding: EdgeInsets.zero,
                       child: Center(
                         child: _buildGameIcon(games[index]),
                       ),
@@ -294,29 +280,10 @@ class HomeContent extends StatelessWidget {
       );
     } else {
       return Icon(
-        _getIconForGame(gameName),
+        Icons.videogame_asset,
         size: 40,
         color: Colors.white,
       );
-    }
-  }
-
-  IconData _getIconForGame(String gameName) {
-    switch (gameName) {
-      case "Adventure":
-        return Icons.castle;
-      case "Sports":
-        return Icons.sports_soccer;
-      case "Puzzle":
-        return Icons.extension;
-      case "Tetris":
-        return Icons.grid_view;
-      case "Shooter":
-        return Icons.sports_esports;
-      case "Strategy":
-        return Icons.psychology;
-      default:
-        return Icons.videogame_asset;
     }
   }
 }
