@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:game_arcade/firebase_options.dart';
+import 'package:game_arcade/screens/admin_panel.dart';
 import 'package:game_arcade/screens/home_screen.dart';
 import 'package:game_arcade/screens/signup.dart';
 import 'package:provider/provider.dart';
@@ -71,6 +72,7 @@ class GameArcadeApp extends StatelessWidget {
           '/login': (context) => const LoginScreen(),
           '/signup': (context) => const SignUpScreen(),
           '/home': (context) => const HomeScreen(),
+          '/adminPanel': (context) => const AdminPanel(), // Add AdminPanel route
         },
       ),
     );

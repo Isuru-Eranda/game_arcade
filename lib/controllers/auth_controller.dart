@@ -20,53 +20,96 @@ class AuthController with ChangeNotifier {
 
   // Sign up user using SignupModel
   Future<String> signupUser(SignupModel signupModel) async {
-    setLoading(true); // Set loading to true
+    String res = "Some error occurred";
     try {
-      // Create user in Firebase Authentication
-      UserCredential cred = await _auth.createUserWithEmailAndPassword(
-        email: signupModel.email,
-        password: signupModel.password,
-      );
+      if (signupModel.email.isNotEmpty &&
+          signupModel.password.isNotEmpty &&
+          signupModel.name.isNotEmpty) {
+        // Register user in Firebase Authentication
+        UserCredential cred = await _auth.createUserWithEmailAndPassword(
+          email: signupModel.email,
+          password: signupModel.password,
+        );
 
-      // Save user data to Firestore
-      await _firestore.collection('users').doc(cred.user!.uid).set({
-        'name': signupModel.name,
-        'email': signupModel.email,
-        'uid': cred.user!.uid,
-        'createdAt': Timestamp.now(),
-      });
+        // Add user to Firestore
+        await _firestore.collection("users").doc(cred.user!.uid).set({
+          'name': signupModel.name,
+          'uid': cred.user!.uid,
+          'email': signupModel.email,
+          'isAdmin': signupModel.isAdmin, // Save isAdmin field
+        });
 
-      setLoading(false); // Set loading to false
-      return "success";
-    } catch (e) {
-      setLoading(false); // Set loading to false
-      return e.toString();
+        res = "success";
+      } else {
+        res = "Please fill in all fields";
+      }
+    } catch (err) {
+      res = err.toString();
     }
+    return res;
   }
 
   // Log in user
   Future<String> loginUser({
     required String email,
     required String password,
+    required BuildContext context,
   }) async {
-    setLoading(true); // Set loading to true
+    String res = "Some error occurred";
     try {
-      await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      if (email.isNotEmpty || password.isNotEmpty) {
+        // Log in user with email and password
+        UserCredential cred = await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
 
-      setLoading(false); // Set loading to false
-      return "success";
-    } catch (e) {
-      setLoading(false); // Set loading to false
-      return e.toString();
+        // Fetch user data from Firestore
+        final userDoc = await _firestore.collection("users").doc(cred.user!.uid).get();
+        final isAdmin = userDoc.data()?['isAdmin'] ?? false;
+
+        // Redirect based on isAdmin field
+        if (isAdmin) {
+          Navigator.pushReplacementNamed(context, '/adminPanel'); // Redirect to Admin Panel
+        } else {
+          Navigator.pushReplacementNamed(context, '/home'); // Redirect to Home Screen
+        }
+
+        res = "success";
+      } else {
+        res = "Please enter all the fields";
+      }
+    } catch (err) {
+      return err.toString();
     }
+    return res;
   }
 
   // Sign out user
   Future<void> signOut() async {
     await _auth.signOut();
     notifyListeners(); // Notify UI about changes
+  }
+}
+
+Future<void> createAdminUser() async {
+  try {
+    // Create admin user in Firebase Authentication
+    UserCredential cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: "admin@example.com",
+      password: "admin123", // Use a secure password
+    );
+
+    // Add admin user to Firestore
+    await FirebaseFirestore.instance.collection("users").doc(cred.user!.uid).set({
+      "name": "Admin User",
+      "email": "admin@example.com",
+      "uid": cred.user!.uid,
+      "isAdmin": true, // Set admin privileges
+    });
+
+    print("Admin user created successfully!");
+  } catch (e) {
+    print("Error creating admin user: $e");
   }
 }

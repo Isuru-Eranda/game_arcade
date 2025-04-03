@@ -149,14 +149,11 @@ class HomeContent extends StatelessWidget {
   }
 
   Widget _buildGameGrid(BuildContext context) {
-    // Games list with FlappyBird as the second game in the first row
+    // Games list with only Dino Run, FlappyBird, and Tetris
     List<String> games = [
       "Dino Run",
       "FlappyBird",
-      "Adventure",
-      "Sports",
-      "Puzzle",
-      "Tetris", // Added Tetris to the games list
+      "Tetris",
     ];
 
     return Padding(
