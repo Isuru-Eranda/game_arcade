@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:game_arcade/firebase_options.dart';
 import 'package:game_arcade/screens/admin_panel.dart';
 import 'package:game_arcade/screens/home_screen.dart';
+import 'package:game_arcade/screens/leaderboard_screen.dart';
 import 'package:game_arcade/screens/signup.dart';
 import 'package:provider/provider.dart';
 import 'package:game_arcade/controllers/auth_controller.dart';
@@ -48,7 +49,6 @@ class GameArcadeApp extends StatelessWidget {
           ),
           primaryColor: Colors.orange,
           colorScheme: ColorScheme.fromSwatch().copyWith(
-            background: Colors.transparent,
             surface: Colors.transparent,
             primary: Colors.orange, // Set primary color to orange
           ),
@@ -72,7 +72,8 @@ class GameArcadeApp extends StatelessWidget {
           '/login': (context) => const LoginScreen(),
           '/signup': (context) => const SignUpScreen(),
           '/home': (context) => const HomeScreen(),
-          '/adminPanel': (context) => const AdminPanel(), // Add AdminPanel route
+          '/adminPanel': (context) => const AdminPanel(),
+          '/leaderboard': (context) => const LeaderboardScreen(), // Add this line
         },
       ),
     );
