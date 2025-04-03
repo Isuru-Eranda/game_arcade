@@ -7,6 +7,8 @@ import 'package:game_arcade/screens/notifications_screens.dart';
 import 'package:game_arcade/screens/tetris_game_screen.dart'; // Add Tetris game screen import
 import 'package:game_arcade/screens/user_profile_screen.dart';
 import 'game_detail_screen.dart';
+import 'package:flutter/material.dart';
+import 'notification_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -52,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedIconTheme: const IconThemeData(size: 40.0),
         // Adding horizontal padding to push icons closer to center
         elevation: 0,
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -70,7 +72,17 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: Icon(Icons.notifications),
+              child: IconButton(
+                icon: const Icon(Icons.notifications),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NotificationScreen()),
+                  );
+                },
+                tooltip: 'Notifications',
+              ),
             ),
             label: '',
           ),
@@ -128,7 +140,8 @@ class HomeContent extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 0), // Removed vertical space between title and grid
+          const SizedBox(
+              height: 0), // Removed vertical space between title and grid
           Expanded(child: _buildGameGrid(context)),
         ],
       ),
