@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:game_arcade/controllers/auth_controller.dart';
 import 'package:game_arcade/screens/signup.dart';
+import 'package:game_arcade/screens/admin_panel.dart'; // Import Admin Panel
 import 'package:game_arcade/widget/button.dart';
 import 'package:game_arcade/widget/text_field.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,10 +33,26 @@ class _LoginScreenState extends State<LoginScreen> {
     String res = await authController.loginUser(
       email: emailController.text.trim(),
       password: passwordController.text.trim(),
+      context: context,
     );
 
     if (res == "success") {
-      Navigator.pushReplacementNamed(context, '/home');
+      // Check if the user is an admin
+      final user = authController.currentUser;
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .get();
+
+      final isAdmin = userDoc.data()?['isAdmin'] ?? false;
+
+      if (isAdmin) {
+        // Redirect to Admin Panel
+        Navigator.pushReplacementNamed(context, '/adminPanel');
+      } else {
+        // Redirect to Home Screen
+        Navigator.pushReplacementNamed(context, '/home');
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(res)));
     }

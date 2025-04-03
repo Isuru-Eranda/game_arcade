@@ -3,10 +3,11 @@ import 'package:game_arcade/games/game2/screens/game_screen.dart' as game2;
 import 'package:game_arcade/screens/dino_game.dart'; // Import DinoGame screen
 import 'package:game_arcade/screens/game_submission_form.dart';
 import 'package:game_arcade/screens/leaderboard_screen.dart';
-import 'package:game_arcade/screens/notifications_screens.dart';
 import 'package:game_arcade/screens/tetris_game_screen.dart'; // Add Tetris game screen import
 import 'package:game_arcade/screens/user_profile_screen.dart';
 import 'game_detail_screen.dart';
+import 'package:flutter/material.dart';
+import 'notification_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = [
     const HomeContent(), // Home content
     const LeaderboardScreen(), // Leaderboard screen
-    const NotificationsScreen(), // Notifications screen
+    const NotificationScreen(), // Notifications screen
     const UserProfileScreen(), // User Profile screen
   ];
 
@@ -52,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedIconTheme: const IconThemeData(size: 40.0),
         // Adding horizontal padding to push icons closer to center
         elevation: 0,
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -69,10 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: Icon(Icons.notifications),
             ),
-            label: '',
+            label: 'Notifications',
           ),
           BottomNavigationBarItem(
             icon: Padding(
@@ -128,7 +129,8 @@ class HomeContent extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 0), // Removed vertical space between title and grid
+          const SizedBox(
+              height: 0), // Removed vertical space between title and grid
           Expanded(child: _buildGameGrid(context)),
         ],
       ),
@@ -136,14 +138,11 @@ class HomeContent extends StatelessWidget {
   }
 
   Widget _buildGameGrid(BuildContext context) {
-    // Games list with FlappyBird as the second game in the first row
+    // Games list with only Dino Run, FlappyBird, and Tetris
     List<String> games = [
       "Dino Run",
       "FlappyBird",
-      "Adventure",
-      "Sports",
-      "Puzzle",
-      "Tetris", // Added Tetris to the games list
+      "Tetris",
     ];
 
     return Padding(
