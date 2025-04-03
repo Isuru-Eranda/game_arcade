@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:game_arcade/services/admin_service.dart';
+import 'package:game_arcade/controllers/admin_service.dart';
 
 class AdminPanel extends StatefulWidget {
   const AdminPanel({super.key});
