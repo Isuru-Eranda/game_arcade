@@ -1,26 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:game_arcade/controllers/admin_service.dart';
+import 'package:game_arcade/screens/gamescreen.dart'; // Import the ApprovedGamesScreen
+import 'package:game_arcade/screens/manage_users_screen.dart';
 
-class AdminPanel extends StatefulWidget {
-  const AdminPanel({super.key});
-
-  @override
-  State<AdminPanel> createState() => _AdminPanelState();
-}
-
-class _AdminPanelState extends State<AdminPanel> {
+class AdminPanel extends StatelessWidget {
   final AdminService _adminService = AdminService();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Admin Panel'),
         backgroundColor: Colors.orange,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.check_circle),
+            tooltip: 'View Approved Games',
+            onPressed: () {
+              // Navigate to ApprovedGamesScreen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GamesScreen(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.people),
+            tooltip: 'Manage Users',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ManageUsersScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _adminService.fetchPendingSubmissions(), // Use AdminService
+        stream: _adminService.fetchPendingSubmissions(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -57,8 +78,6 @@ class _AdminPanelState extends State<AdminPanel> {
                       Text('Description: ${data['description']}'),
                       const SizedBox(height: 5),
                       Text('Submitted by: ${data['email']}'),
-                      const SizedBox(height: 5),
-                      Text('Status: ${data['status']}'),
                       const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,7 +85,10 @@ class _AdminPanelState extends State<AdminPanel> {
                           ElevatedButton(
                             onPressed: () async {
                               try {
-                                await _adminService.approveSubmission(submission.id);
+                                await _adminService.approveSubmission(
+                                  submission.id,
+                                  data, // Pass the game data
+                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Game approved successfully!')),
                                 );

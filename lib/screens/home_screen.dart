@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_arcade/games/game2/screens/game_screen.dart' as game2;
 import 'package:game_arcade/screens/dino_game.dart'; // Import DinoGame screen
+import 'package:game_arcade/screens/game_detail_screen.dart';
 import 'package:game_arcade/screens/game_submission_form.dart';
 import 'package:game_arcade/screens/leaderboard_screen.dart';
 import 'package:game_arcade/screens/notification_screen.dart'; // Using existing file

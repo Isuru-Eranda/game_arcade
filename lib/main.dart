@@ -75,7 +75,7 @@ class GameArcadeApp extends StatelessWidget {
           '/login': (context) => const LoginScreen(),
           '/signup': (context) => const SignUpScreen(),
           '/home': (context) => const HomeScreen(),
-          '/adminPanel': (context) => const AdminPanel(),
+          '/adminPanel': (context) => AdminPanel(),
           '/leaderboard': (context) => const LeaderboardScreen(), // Add this line
           '/editProfile': (context) => const EditProfileScreen(), // Add EditProfileScreen route
         },

@@ -57,7 +57,7 @@ class AuthController with ChangeNotifier {
   }) async {
     String res = "Some error occurred";
     try {
-      if (email.isNotEmpty || password.isNotEmpty) {
+      if (email.isNotEmpty && password.isNotEmpty) {
         // Log in user with email and password
         UserCredential cred = await _auth.signInWithEmailAndPassword(
           email: email,
@@ -66,9 +66,22 @@ class AuthController with ChangeNotifier {
 
         // Fetch user data from Firestore
         final userDoc = await _firestore.collection("users").doc(cred.user!.uid).get();
-        final isAdmin = userDoc.data()?['isAdmin'] ?? false;
+        final userData = userDoc.data();
 
-        // Redirect based on isAdmin field
+        if (userData == null) {
+          res = "User data not found.";
+          return res;
+        }
+
+        // Check if the user is blocked
+        if (userData['status'] == 'blocked') {
+          res = "Your account has been blocked. Please contact support.";
+          await _auth.signOut(); // Sign out the user immediately
+          return res;
+        }
+
+        // Redirect based on user role
+        final isAdmin = userData['isAdmin'] ?? false;
         if (isAdmin) {
           Navigator.pushReplacementNamed(context, '/adminPanel'); // Redirect to Admin Panel
         } else {
@@ -77,10 +90,10 @@ class AuthController with ChangeNotifier {
 
         res = "success";
       } else {
-        res = "Please enter all the fields";
+        res = "Please enter all the fields.";
       }
     } catch (err) {
-      return err.toString();
+      res = err.toString();
     }
     return res;
   }
