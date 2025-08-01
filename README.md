@@ -46,11 +46,7 @@ Game Arcade is a mobile gaming application built with Flutter that provides an i
 
 ### Platform Support
 - ✅ Android
-- ✅ iOS
 - ✅ Web
-- ✅ Windows
-- ✅ macOS
-- ✅ Linux
 
 ## 📁 Project Structure
 
